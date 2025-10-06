@@ -22,9 +22,8 @@ class Solution {
         for (char[] t : types) {
             int s1 = c.getOrDefault(t[0], 0); 
             int s2 = c.getOrDefault(t[1], 0);
-            if (s1 > s2) sb.append(t[0]); 
-            else if (s1 < s2) sb.append(t[1]);
-            else sb.append((char) Math.min(t[0], t[1]));
+            if (s1 >= s2) sb.append(t[0]); 
+            else sb.append(t[1]);
         } 
             
         return sb.toString();
