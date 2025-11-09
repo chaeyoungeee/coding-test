@@ -1,0 +1,45 @@
+import java.io.*;
+import java.util.*;
+
+class Main {
+    public static String bfs(int n) {
+        Queue<String> que = new LinkedList<>();
+        Set<Integer> visited = new HashSet<>();
+
+        que.add("8");
+
+        while (!que.isEmpty()) {
+            String s = que.poll();
+
+            int remainder = 0;
+            for (char c : s.toCharArray()) {
+                remainder = (remainder * 10 + (c - '0')) % n;
+            }
+
+            if (remainder == 0) {
+                return s;
+            }
+
+            if (visited.contains(remainder)) continue;
+            visited.add(remainder);
+
+            que.add(s + "0");
+            que.add(s + "8");
+        }
+        return "0";
+    }
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        int T = Integer.parseInt(br.readLine());
+
+        for (int i = 0; i < T; i++) {
+            int n = Integer.parseInt(br.readLine());
+            String result = bfs(n);
+            bw.write(result);
+            bw.newLine();
+        }
+        bw.flush();
+    }
+}
