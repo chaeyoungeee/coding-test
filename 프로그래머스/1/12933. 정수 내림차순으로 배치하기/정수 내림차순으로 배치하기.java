@@ -1,9 +1,13 @@
-import java.util.*;
+import java.util.Arrays;
 
 class Solution {
     public long solution(long n) {
-        String[] s = String.valueOf(n).split("");
-        Arrays.sort(s, Collections.reverseOrder());
-        return Long.parseLong(String.join("", s));
+        char[] ca = String.valueOf(n).toCharArray();
+        Arrays.sort(ca);
+        StringBuilder sb = new StringBuilder();
+        for (int i = ca.length -1; i >= 0; i--) {
+            sb.append(ca[i]);
+        }
+        return Long.valueOf(sb.toString());
     }
 }
