@@ -3,6 +3,8 @@ import java.util.*;
 class Solution {
     
     static int[][] cost;
+    static int n, m;
+    static int max;
     
     static int[][] dirs = {
         {1, 0}, {0, 1}, {-1, 0}, {0, -1}
@@ -19,13 +21,13 @@ class Solution {
     }
     
     static boolean inBoard(int x, int y, int[][] board) {
-        if (x >= board.length || x < 0 || y >= board[0].length || y < 0) return false;
+        if (x >= n || x < 0 || y >= m || y < 0) return false;
         if (board[x][y] == 1) return false;
         return true;
     }
     
     static int bfs(int[][] board) {
-        int result = Integer.MAX_VALUE;
+        int result = max;
         ArrayDeque<Info> que = new ArrayDeque<>();
         for (int i = 0; i < 2; i++) {
             cost[0][0] = 0;
@@ -48,8 +50,8 @@ class Solution {
                 cost[nx][ny] = ncost;
                 que.add(new Info(nx, ny, i, ncost));
                 
-                if (cost[board.length-1][board[0].length-1] < Integer.MAX_VALUE) {
-                    result = Math.min(result, cost[board.length-1][board[0].length-1]);
+                if (cost[n-1][m-1] < max) {
+                    result = Math.min(result, cost[n-1][m-1]);
                 }
             }
         }
@@ -58,11 +60,13 @@ class Solution {
     }
     
     public int solution(int[][] board) {
-        
-        cost = new int[board.length][board[0].length];
+        n = board.length;
+        m = board[0].length;
+        cost = new int[n][m];
+        max = n * m * 6;
         
         for (int[] c : cost) {
-            Arrays.fill(c, Integer.MAX_VALUE-100);
+            Arrays.fill(c, max);
         }
         
         int result = bfs(board);
