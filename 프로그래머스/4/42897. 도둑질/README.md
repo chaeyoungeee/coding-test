@@ -1,10 +1,10 @@
 # [level 4] 도둑질 - 42897 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/42897?language=java) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/42897?language=java#) 
 
 ### 성능 요약
 
-메모리: 110 MB, 시간: 30.71 ms
+메모리: 125 MB, 시간: 25.00 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2026년 01월 29일 00:15:56
+2026년 01월 29일 00:19:44
 
 ### 문제 설명
 

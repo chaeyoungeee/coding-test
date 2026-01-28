@@ -3,15 +3,16 @@ import java.util.Arrays;
 class Solution {
     int getMax(int[] money) {
         int n = money.length;
-        int[] dp = new int[n];
-        dp[0] = money[0];
-        dp[1] = Math.max(money[0], money[1]);
+        int a = money[0];
+        int b = Math.max(money[0], money[1]);
                 
         for (int i = 2; i < n; i++) {
-            dp[i] = Math.max(dp[i-1], dp[i-2]+money[i]);
+            int c = b;
+            b = Math.max(b, a+money[i]);
+            a = c;
         }
     
-        return Math.max(dp[n-1], dp[n-2]);
+        return Math.max(a, b);
     }
     
     public int solution(int[] money) {
