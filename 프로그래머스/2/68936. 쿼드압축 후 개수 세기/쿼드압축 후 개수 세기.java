@@ -3,8 +3,8 @@ import java.util.*;
 class Solution {
     public int[] solution(int[][] arr) {
         int k = arr.length;
-        int[][] dirs = {{0,0}, {1, 0}, {1, 1}, {0, 1}};
-        int[] answer = {0, 0};
+        int[][] dirs = {{0,0}, {1,0}, {1,1}, {0,1}};
+        int[] answer = {0,0};
         int[][] next = new int[k/2][k/2];
     
     
@@ -14,8 +14,8 @@ class Solution {
                 for (int j = 0; j < k-1; j+=2) {
                     int[] c = {0, 0};
                     for (int[] dir : dirs) {
-                        if (arr[i+dir[0]][j+dir[1]] == 0) c[0] += 1;
-                        else if (arr[i+dir[0]][j+dir[1]] == 1) c[1] += 1;
+                        int v = arr[i+dir[0]][j+dir[1]];
+                        if (v != -1) c[v] += 1;
                     }
                     if (c[0] == 4) {
                         next[i/2][j/2] = 0;
@@ -30,9 +30,7 @@ class Solution {
             }
             
             if (k == 2) {
-                if (next[0][0] != -1) {
-                    answer[next[0][0]] += 1;
-                }
+                if (next[0][0] != -1) answer[next[0][0]] += 1;
                 break;
             }
 
@@ -43,7 +41,6 @@ class Solution {
             }         
         }
         
-
         return answer;
     }
 }
