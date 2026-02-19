@@ -1,31 +1,21 @@
-import java.util.*;
-import java.util.stream.*;
-
 class Solution {
-    public int solution(int[] citations) {
-        int answer = 0;
-        
-        Map<Integer, Integer> count = new HashMap<>();
-        for (int citation : citations) {
-            count.merge(citation, 1, Integer::sum);
-        }
-        
-        List<Integer> keys = count.entrySet().stream()
-            .sorted(Comparator.comparing(Map.Entry::getKey, Comparator.reverseOrder()))
-            .map(Map.Entry::getKey)
-            .collect(Collectors.toList());
-        
-        for (int i = 0; i < keys.size(); i++) {
-            int k = keys.get(i);
-            int v = count.get(k);
-            if (k >= v) {
-                answer = v;
-            }
-            if (i != keys.size()-1) {
-                count.merge(keys.get(i+1), v, Integer::sum);   
-            }
-        }
     
-        return answer;
-    }
+    public int solution(int[] citations) {
+        int n = citations.length;
+        int[] count = new int[100000];
+        int max = 0;
+
+        for (int i = 0; i < n; i++) {
+            count[citations[i]] += 1;
+            max = Math.max(citations[i], max);
+        }
+
+                
+        for (int i = max; i > 0; i--) {
+            if (count[i] >= i) return i;
+            count[i-1] += count[i];
+        }
+        
+        return 0;
+    } 
 }
