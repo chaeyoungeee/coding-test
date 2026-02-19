@@ -2,7 +2,7 @@ class Solution {
     
     public int solution(int[] citations) {
         int n = citations.length;
-        int[] count = new int[100000];
+        int[] count = new int[10001];
         int max = 0;
 
         for (int i = 0; i < n; i++) {
