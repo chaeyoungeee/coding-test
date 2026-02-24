@@ -1,7 +1,11 @@
-select fi.ID, fni.FISH_NAME, fi.LENGTH
-from FISH_INFO fi
-left join FISH_NAME_INFO fni on fi.FISH_TYPE = fni.FISH_TYPE
-where (fi.FISH_TYPE, fi.LENGTH) in (select f.FISH_TYPE, max(f.LENGTH)
-    from FISH_INFO f
-    group by f.FISH_TYPE)
-order by fi.ID
+with big as (
+    select FISH_TYPE, max(LENGTH) LENGTH
+    from FISH_INFO
+    group by FISH_TYPE
+)
+
+select ID, FISH_NAME, LENGTH
+from FISH_INFO f
+join FISH_NAME_INFO n on f.FISH_TYPE = n.FISH_TYPE
+where (f.FISH_TYPE, f.LENGTH) in (select * from big)
+order by ID
