@@ -1,9 +1,19 @@
-select CAR_ID, case when sum(case when '2022-10-16' 
-                    between START_DATE and END_DATE then 1
-                    else 0
-                    end) >= 1 then '대여중'
-                    else '대여 가능'
-                    end AVAILABILITY
+select h.CAR_ID, case when c.CAR_ID is null then '대여 가능'
+                    else '대여중' end
+                    AVAILABILITY
+                    
+from
+
+((select distinct CAR_ID
+from CAR_RENTAL_COMPANY_RENTAL_HISTORY) h
+
+left join 
+
+(select distinct CAR_ID
 from CAR_RENTAL_COMPANY_RENTAL_HISTORY
-group by CAR_ID
-order by CAR_ID desc
+where '2022-10-16' between START_DATE and END_DATE
+order by 1) c 
+
+on c.CAR_ID = h.CAR_ID) 
+
+order by 1 desc
