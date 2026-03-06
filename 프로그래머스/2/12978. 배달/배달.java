@@ -11,44 +11,49 @@ class Solution {
         }
     }
     
-    static void djikstra(int[] dist, ArrayList<Node>[] adjList) {
-        PriorityQueue<Node> pq = new PriorityQueue<>((a, b)->Integer.compare(a.cost, b.cost));
-        dist[1] = 0;
-        pq.add(new Node(1, 0));
+    static ArrayList<Node>[] graph;
+    static int[] cost;
+    
+    static void djikstra(int start) {
+        cost[start] = 0;
+        PriorityQueue<Node> pq = new PriorityQueue<>((a, b) -> Integer.compare(a.cost, b.cost));
+        pq.add(new Node(start, 0));
         
         while (!pq.isEmpty()) {
             Node now = pq.poll();
-            for (Node next : adjList[now.x]) {
-                if (dist[next.x] < now.cost + next.cost) continue;
-                dist[next.x] = now.cost + next.cost;
-                pq.add(new Node(next.x, dist[next.x]));
+            if (cost[now.x] < now.cost) continue;
+            
+            for (Node next : graph[now.x]) {
+                int ncost = now.cost + next.cost;
+                if (cost[next.x] > ncost) {
+                    cost[next.x] = ncost;
+                    pq.add(new Node(next.x, ncost));
+                }
             }
         }
     }
     
     public int solution(int N, int[][] road, int K) {
+        graph = new ArrayList[N+1];
+        cost = new int[N+1];
+        Arrays.fill(cost, Integer.MAX_VALUE);
         
-        int[] dist = new int[N+1];
-        Arrays.fill(dist, Integer.MAX_VALUE);
-        ArrayList<Node>[] adjList = new ArrayList[N+1];
-        
-        for (int i = 1; i < N + 1; i++) {
-            adjList[i] = new ArrayList<>();
+        for (int i = 0; i < N+1; i++) {
+            graph[i] = new ArrayList<>();    
         }
         
         for (int[] r : road) {
-            adjList[r[0]].add(new Node(r[1], r[2]));
-            adjList[r[1]].add(new Node(r[0], r[2]));
+            graph[r[0]].add(new Node(r[1], r[2]));
+            graph[r[1]].add(new Node(r[0], r[2]));
         }
         
-        djikstra(dist, adjList);
+        djikstra(1);
         
-        int cnt = 0;
-        
-        for (int d : dist) {
-            if (d <= K) cnt++;
-        }
-        
-        return cnt;
+        return (int) Arrays.stream(cost)
+                    .filter(c -> {
+                        if (c <= K) return true;
+                        return false;
+                    })
+                    .count();
     }
 }
