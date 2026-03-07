@@ -2,8 +2,6 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int[] coin;
-
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         
@@ -16,22 +14,21 @@ public class Main {
             s.add(Integer.parseInt(br.readLine()));
         }
 
-        coin = s.stream()
+        int[] dp = new int[k+1];
+        Arrays.fill(dp, k+1);
+        dp[0] = 0;
+        int[] value = s.stream()
             .sorted((a, b) -> Integer.compare(a, b))
             .mapToInt(x->x)
             .toArray();
 
-        int[] dp = new int[k+1];
-        Arrays.fill(dp, 10001);
-
-        dp[0] = 0;
-        
-        for (int c : coin) {
-            for (int i = c; i < k+1; i ++) {
-                dp[i] = Math.min(dp[i-c]+1, dp[i]);
+        for (int v : value) {
+            for (int i = v; i <= k; i++) {
+                dp[i] = Math.min(dp[i-v]+1, dp[i]);
             }
         }
-        
-        System.out.println(dp[k] == 10001 ? -1 : dp[k]);
+
+        // System.out.println(Arrays.toString(dp));
+        System.out.println(dp[k] == k+1 ? -1 : dp[k]);
     }
 }
