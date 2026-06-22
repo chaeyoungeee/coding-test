@@ -1,16 +1,8 @@
-from collections import deque
+def dfs(numbers, target, idx, total):
+    if idx == len(numbers):
+        return 1 if target == total else 0
 
-def solution(numbers, target):
-    cnt = 0
-    q = deque([(numbers[0], 0), (-numbers[0], 0)])
+    return dfs(numbers, target, idx+1, total+numbers[idx]) + dfs(numbers, target, idx+1, total-numbers[idx])
     
-    while q:
-        n, k = q.popleft()
-        if k == len(numbers)-1:
-            if n == target: cnt += 1
-        else:
-            k += 1
-            q.append((n+numbers[k], k))
-            q.append((n-numbers[k], k))
-        
-    return cnt
+def solution(numbers, target):
+    return dfs(numbers, target, 0, 0)
