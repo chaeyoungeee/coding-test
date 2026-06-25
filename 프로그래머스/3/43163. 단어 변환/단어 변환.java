@@ -2,44 +2,50 @@ import java.util.*;
 import java.util.stream.*;
 
 class Solution {
-    public static class Word {
-        int c;
-        String s;
-        public Word (int c, String s) {this.c = c; this.s = s;}
-    }
-    
-    public static Set<String> find(String s, Set<String> words) {
-        Set<String> set = new HashSet<>();
-        l:
-        for (String w : words) {
-            int cnt = 0;
-            for (int i = 0; i < s.length(); i++) {    
-                if (w.charAt(i) != s.charAt(i)) cnt++;
-                if (cnt > 1) continue l;
-            }
-            if (cnt == 1) set.add(w);
-        }
-        return set;
-    }
-    
-    public static int bfs(String begin, String target, Set<String> words) {
-        ArrayDeque<Word> q = new ArrayDeque<>();
-        q.add(new Word(0, begin));
+    static class B {
+        String word;
+        int cnt;
         
-        while(!q.isEmpty() || words.size() != 0) {           
-            Word curr = q.poll();
-            words.remove(curr.s);
-            
-            Set<String> s = find(curr.s, words);
-            if (s.contains(target)) return curr.c + 1;
-            for (String i : s) {
-                q.add(new Word(curr.c + 1, i));
-            }
+        public B(String word, int cnt) {
+            this.word = word;
+            this.cnt = cnt;
         }
-        return 0;
+    }
+    
+    static boolean oneDiff(String a, String b) {
+        int cnt = 0;
+        for (int i = 0; i < a.length(); i++) {
+            if (cnt > 1) return false;
+            if (a.charAt(i) != b.charAt(i)) cnt +=1;
+        }
+        
+        if (cnt == 1) return true;
+        return false;
     }
     
     public int solution(String begin, String target, String[] words) {
-        return bfs(begin, target, Arrays.stream(words).collect(Collectors.toSet()));
+        ArrayDeque<B> d = new ArrayDeque<>();
+        HashSet<String> visited = new HashSet<>();
+        
+        d.add(new B(begin, 0));
+        visited.add(begin);
+        
+        while (!d.isEmpty()) {
+            B b = d.poll();
+            
+            if (b.word.equals(target)) {
+                return b.cnt;
+            }
+            
+            for (String word : words) {
+                if (!visited.contains(word) && oneDiff(word, b.word)) {
+                    visited.add(word);
+                    d.add(new B(word, b.cnt+1));
+                }
+            }
+            
+        }
+        
+        return 0;
     }
 }
