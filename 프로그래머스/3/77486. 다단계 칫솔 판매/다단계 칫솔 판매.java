@@ -3,27 +3,36 @@ import java.util.*;
 class Solution {
     public int[] solution(String[] enroll, String[] referral, String[] seller, int[] amount) {
         int[] answer = new int[enroll.length];
-        Map<String, String> p = new HashMap<String, String>(); //셀러, 추천인
-        Map<String, Integer> prices = new HashMap<String, Integer>();
+        
+        Map<String, String> cn = new HashMap<>();
+        Map<String, Integer> pf = new HashMap<>();
+        pf.put("-", 0);
         
         for (int i = 0; i < enroll.length; i++) {
-            p.put(enroll[i], referral[i]);
+            cn.put(enroll[i], referral[i]);
+            pf.put(enroll[i], 0);
         }
+        
+        System.out.println(cn);
         
         for (int i = 0; i < seller.length; i++) {
-            int price = amount[i] * 100;
-            String s = seller[i];
-            while (p.containsKey(s)) {
-                if (price < 10) break;
-                prices.merge(s, price - (int) (price * 0.1), Integer::sum);
-                price = (int) (price * 0.1);
-                s = p.get(s);
+            String curr = seller[i];
+            int a = amount[i] * 100;
+            while (!curr.equals("-")) {
+                if (a >= 10) {
+                    pf.merge(curr, a-(int)(a*0.1), Integer::sum);
+                    a *= 0.1;
+                    curr = cn.get(curr);
+                } else {
+                    pf.merge(curr, a, Integer::sum);
+                    break;
+                }
             }
-            prices.merge(s, price, Integer::sum);
         }
         
-        for (int i = 0; i < answer.length; i++) {
-            answer[i] = prices.getOrDefault(enroll[i], 0);
+        
+        for (int i = 0; i < enroll.length; i++) {
+            answer[i] = pf.get(enroll[i]);
         }
         
         return answer;
