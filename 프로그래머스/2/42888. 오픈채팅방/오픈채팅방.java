@@ -2,27 +2,19 @@ import java.util.*;
 
 class Solution {
     public String[] solution(String[] record) {
-        List<String> result = new ArrayList<>();
-        HashMap<String, String> m = new HashMap<>();
+        Map<String, String> nickname = new HashMap<>();
+        List<String[]> result = new ArrayList<>();
         
         for (String r : record) {
-            String[] s = r.split(" ");
-            
-            if (!s[0].equals("Leave")) {
-                m.put(s[1], s[2]);
-            }
+            String[] t = r.split(" ");
+            if (!t[0].equals("Leave")) nickname.put(t[1], t[2]);
+            if (!t[0].equals("Change")) result.add(new String[] {t[0], t[1]});
         }
         
-        for (String r : record) {
-            String[] s = r.split(" ");
-            
-            if (s[0].equals("Enter")) {
-                result.add(m.get(s[1]).concat("님이 들어왔습니다."));
-            } else if (s[0].equals("Leave")) {
-                result.add(m.get(s[1]).concat("님이 나갔습니다."));
-            }
-        }
-        
-        return result.toArray(new String[0]);
+        return result.stream()
+            .map(a -> a[0].equals("Enter") ? 
+                        nickname.get(a[1]) + "님이 들어왔습니다." 
+                        : nickname.get(a[1]) + "님이 나갔습니다.")
+            .toArray(String[]::new);
     }
 }
