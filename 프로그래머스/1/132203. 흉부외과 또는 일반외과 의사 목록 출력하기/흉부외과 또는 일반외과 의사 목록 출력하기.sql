@@ -1,4 +1,10 @@
-select DR_NAME, DR_ID, MCDP_CD, DATE_FORMAT(HIRE_YMD, '%Y-%m-%d') HIRE_YMD
+-- select DR_NAME, DR_ID, MCDP_CD, DATE_FORMAT(HIRE_YMD, '%Y-%m-%d') HIRE_YMD
+-- from DOCTOR
+-- where MCDP_CD = 'CS' or MCDP_CD = 'GS'
+-- order by HIRE_YMD desc, DR_NAME
+
+
+select DR_NAME, DR_ID, MCDP_CD, to_char(HIRE_YMD, 'YYYY-MM-DD') HIRE_YMD
 from DOCTOR
-where MCDP_CD = 'CS' or MCDP_CD = 'GS'
+where MCDP_CD in ('CS', 'GS')
 order by HIRE_YMD desc, DR_NAME
