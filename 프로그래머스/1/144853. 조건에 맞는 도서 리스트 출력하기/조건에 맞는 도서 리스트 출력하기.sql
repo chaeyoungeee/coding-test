@@ -1,0 +1,12 @@
+-- MySQL
+-- 
+-- select BOOK_ID, DATE_FORMAT(PUBLISHED_DATE, '%Y-%m-%d')
+-- from BOOK
+-- where CATEGORY = '인문' and year(PUBLISHED_DATE) = 2021
+-- order by PUBLISHED_DATE
+
+select BOOK_ID, TO_CHAR(PUBLISHED_DATE, 'YYYY-MM-DD') PUBLISHED_DATE
+from BOOK
+where CATEGORY = '인문' 
+    and TO_CHAR(PUBLISHED_DATE, 'YYYY') = 2021
+order by PUBLISHED_DATE
