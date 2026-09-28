@@ -1,11 +1,10 @@
-with rnk as (
-    select CATEGORY, PRICE, PRODUCT_NAME,
-        rank() over(partition by CATEGORY order by PRICE desc) r
-    from FOOD_PRODUCT
-    where CATEGORY in ('과자', '국', '김치', '식용유')
-)
+WITH TMP AS (
+    SELECT CATEGORY, MAX(PRICE)
+    FROM FOOD_PRODUCT
+    WHERE CATEGORY IN ('과자', '국', '김치', '식용유')
+    GROUP BY CATEGORY)
 
-select CATEGORY, PRICE, PRODUCT_NAME
-from rnk
-where r = 1
-order by 2 desc
+SELECT CATEGORY, PRICE MAX_PRICE, PRODUCT_NAME
+FROM FOOD_PRODUCT
+WHERE (CATEGORY, PRICE) IN (SELECT * FROM TMP)
+ORDER BY MAX_PRICE DESC
