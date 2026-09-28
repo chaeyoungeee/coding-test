@@ -1,5 +1,10 @@
-set @hour := -1;
-
-select @hour := @hour + 1 HOUR, (select count(*) from ANIMAL_OUTS o where hour(o.DATETIME) = @hour) COUNT
-from ANIMAL_OUTS
-where @hour < 23
+WITH TMP AS (
+    SELECT LEVEL-1 HOUR
+    FROM DUAL
+    CONNECT BY LEVEL <= 24)
+    
+SELECT HOUR, COUNT(DATETIME) COUNT
+FROM TMP
+LEFT JOIN ANIMAL_OUTS ON HOUR = TO_NUMBER(TO_CHAR(DATETIME,'HH24'))
+GROUP BY HOUR
+ORDER BY HOUR
