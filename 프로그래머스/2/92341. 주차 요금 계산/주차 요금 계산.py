@@ -5,10 +5,6 @@ def toMin(time):
     h, m = map(int, time.split(":"))
     return h * 60 + m
 
-def duration(start, end):
-    return toMin(end) - toMin(start) 
-    
-
 def solution(fees, records):
     answer = []
     cin = defaultdict(int)
@@ -17,12 +13,13 @@ def solution(fees, records):
     for record in records:
         time, car, rec = record.split(' ')
         if rec == 'IN':
-            cin[car] = time
+            cin[car] = toMin(time)
         else:
-            acc[car] += duration(cin.pop(car), time)
+            acc[car] += toMin(time) - cin.pop(car)
     
+    end = toMin("23:59")
     for car in cin.keys():
-        acc[car] += duration(cin[car], "23:59")
+        acc[car] += end - cin[car]
         
     for car in sorted(acc.keys()):
         if fees[0] >= acc[car]:
