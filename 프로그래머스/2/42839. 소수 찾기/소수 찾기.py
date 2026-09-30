@@ -1,4 +1,4 @@
-from itertools import permutations
+data = set()
 
 def is_prime(k):
     if k == 0 or k == 1: return False
@@ -6,17 +6,25 @@ def is_prime(k):
         if k % i == 0: return False
     return True
 
+def perm(i, n, visited, numbers):
+    if len(i) == n:
+        p = int(i)
+        if is_prime(p):
+            data.add(p)
+        return
+
+    for j in range(len(numbers)):
+        if not visited[j]:
+            visited[j] = True
+            perm(i+numbers[j], n, visited, numbers)
+            visited[j] = False
+
 def solution(numbers):
-    s = set()
     n = list(numbers)
     primes = set()
-    
-    for i in range(1, len(numbers)+1):
-        s.update(set(permutations(n, i)))
         
-    for i in s:
-        n = int(''.join(i))
-        if is_prime(n):
-            primes.add(n)
-    
-    return len(primes)
+    l = len(numbers)
+    for i in range(1, 1+l):
+        perm("", i, [False]*l, numbers)
+                   
+    return len(data)
