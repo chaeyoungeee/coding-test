@@ -1,13 +1,10 @@
-with temp as (
-    select BOARD_ID
-    from USED_GOODS_BOARD
-    order by VIEWS desc
-    limit 1
-)
 
-select concat('/home/grep/src/', BOARD_ID, '/', FILE_ID, FILE_NAME, FILE_EXT) FILE_PATH
-from USED_GOODS_FILE f
-where BOARD_ID in (
-    select * from temp
-)
-order by FILE_ID desc
+
+
+SELECT '/home/grep/src/' || BOARD_ID || '/'  || FILE_ID || FILE_NAME || FILE_EXT AS FILE_PATH
+FROM USED_GOODS_FILE
+WHERE BOARD_ID = (SELECT BOARD_ID
+                    FROM USED_GOODS_BOARD
+                    ORDER BY VIEWS DESC
+                    FETCH FIRST 1 ROW ONLY)
+ORDER BY FILE_ID DESC
